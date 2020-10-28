@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <!--
+    To change this license header, choose License Headers in Project Properties.
+    To change this template file, choose Tools | Templates
+    and open the template in the editor.
+    -->
+    <head>
+        <meta charset="UTF-8">
+        <title>Surf´s APP</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <!--      <style th:inline="text">
+                  body{
+                      background: url{[[@{/Downloads/lake-3236174_1280.jpg}]]}
+                      no-repeat center center fixed;
+                  }
+              </style>   -->
+    </head>
+    <body>    <!--th:style="'background:url('+ @{/images/lake-3236174_1280.jpg} +');'"-->
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4">Surf´s APP</h1>
+                <div class="dropdown" style="text-align:right">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        spotcheck
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="http://localhost:8080/achensee">Achensee</a>
+                        <a class="dropdown-item" href="http://localhost:8080/mattsee">Mattsee</a>
+                        <a class="dropdown-item" href="http://localhost:8080/neusiedlersee">Podersdorf</a>
+                        <a class="dropdown-item" href="http://localhost:8080/traunsee">Ebensee</a>
+                        <a class="dropdown-item" href="http://localhost:8080/guestbook">Gästebuch</a>
+                    </div>
+                </div>
+                <p class="lead">Softwarebasierte Darstellung der Windverhältnisse an österreichischen Seen.</p>
+            </div>
+        </div>
+
+
+        <!--    <form action="spots" method="POST">
+                <div class="form-group">
+                    <label for="name">Spotauswahl</label>
+                    <select name="name" class="form-control" onchange="this.form.submit()">
+                        <option th:each="name : ${names}" 
+                                th:value="${name}" 
+                                th:text="${name}"
+                                th:selected="${name == selectedSpot}">Land</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary sr-only">Auswahl</button>
+            </form>    -->
+
+
+
+        <div class="container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" style="text-align:center; vertical-align: middle"></th>
+                        <th scope="col" style="text-align:center; vertical-align: middle">temp_c</th>
+                        <th scope="col" style="text-align:center; vertical-align: middle">icon</th>
+                        <th scope="col" style="text-align:center; vertical-align: middle">wind_dir</th>
+                        <th scope="col" style="text-align:center; vertical-align: middle">wind_kph</th>
+                        <th scope="col" style="text-align:center; vertical-align: middle">gust_kph</th>
+                        <th scope="col" style="text-align:center; vertical-align: middle">surfs_up</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- <button type="button" class="btn btn-light">Achensee</button>  -->
+                    <tr th:each="weatherdata,iter:${items}">
+                        <!-- <td th:text="${iter.index + 1}" th:insert="${weatherdata.location.name}"><button type="button" class="btn btn-light">Achensee</button></td> -->
+                        <td th:text="${iter.index + 1}" th:remove="all">0</td>
+                        <td th:text="${weatherdata.location.name}" style="text-align:left; vertical-align: middle"></td>                      
+                        <td th:text="${weatherdata.current.temp_c}" style="text-align:center; vertical-align: middle">0</td>
+                        <td style="text-align:center; vertical-align: middle"><img th:src="${weatherdata.current.condition.icon}"></td>
+                        <td th:text="${weatherdata.current.wind_dir}" style="text-align:center; vertical-align: middle">@mdo</td>
+                        <td th:text="${weatherdata.current.wind_kph}" style="text-align:center; vertical-align: middle">@mdo</td>
+                        <td th:text="${weatherdata.current.gust_kph}" style="text-align:center; vertical-align: middle">@mdo</td>
+                        <td style="align-content: center" th:if="${weatherdata.current.wind_kph}>15"><div style="width:100%;height:0;padding-bottom:73%;position:relative;"><iframe src="https://giphy.com/embed/Qu7AGly7OEpRY7U1Sp" width="80" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>                          
+                    </tr>                         
+                <div><a href="https://www.weatherapi.com/" title="Free Weather API"><img src='//cdn.weatherapi.com/v4/images/weatherapi_logo.png' alt="Weather data by WeatherAPI.com" border="0"></a></div>
+                </tbody>
+            </table>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <!--<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>-->
+    </body>
+</html>

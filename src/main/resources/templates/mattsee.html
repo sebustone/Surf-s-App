@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <!--
+    To change this license header, choose License Headers in Project Properties.
+    To change this template file, choose Tools | Templates
+    and open the template in the editor.
+    -->
+    <head>
+        <meta charset="UTF-8">
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>   
+    </head>
+    <body>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4">Mattsee</h1>
+                <div style="text-align:right"><a href="https://www.google.at/maps/place/5163+Mattsee/@47.9703847,13.0872655,14z/data=!3m1!4b1!4m5!3m4!1s0x477427f4cfed87f7:0x3e8d37167535b2bb!8m2!3d47.9703866!4d13.1047752"><img width="64" alt="Google Maps icon (2020)" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Google_Maps_icon_%282020%29.svg/64px-Google_Maps_icon_%282020%29.svg.png"></a></div>
+                <p class="lead">Hier sehen Sie die Windwerte und Temperatur der letzten 24 Stunden.</p>
+            </div>
+        </div>
+        <div class="container">
+            <div id="plotDiv"></div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" style="text-align:center; vertical-align: middle"></th>
+                        <th scope="col" style="text-align:center; vertical-align: middle">temp_c</th>
+                        <th scope="col" style="text-align:center; vertical-align: middle">icon</th>
+                        <th scope="col" style="text-align:center; vertical-align: middle">wind_dir</th>
+                        <th scope="col" style="text-align:center; vertical-align: middle">wind_kph</th>
+                        <th scope="col" style="text-align:center; vertical-align: middle">gust_kph</th>
+                        <th scope="col" style="text-align:center; vertical-align: middle">surfs_up</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- <button type="button" class="btn btn-light">Achensee</button>  -->
+                    <tr th:each="data,iter:${items}">
+                        <!-- <td th:text="${iter.index + 1}" th:insert="${weatherdata.location.name}"><button type="button" class="btn btn-light">Achensee</button></td> -->
+                        <td th:text="${iter.index + 1}" th:remove="all">0</td>
+                        <td th:text="${data.name}" th:remove="all"></td>                      
+                        <td th:text="${data.local_time}" style="text-align:left; vertical-align: middle">0</td>                      
+                        <td th:text="${data.temp_c}"style="text-align:center; vertical-align: middle">0</td>
+                        <td style="text-align:center; vertical-align: middle"><img th:src="${data.icon}"></td>
+                        <td th:text="${data.wind_dir}" style="text-align:center; vertical-align: middle">@mdo</td>
+                        <td th:text="${data.wind_kph}" style="text-align:center; vertical-align: middle">@mdo</td>
+                        <td th:text="${data.gust_kph}" style="text-align:center; vertical-align: middle">@mdo</td>
+                        <td th:if="${data.wind_kph}>15" style="text-align:center; vertical-align: middle"><div style="width:100%;height:0;padding-bottom:73%;position:relative;"><iframe src="https://giphy.com/embed/Qu7AGly7OEpRY7U1Sp" width="80" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>
+                    </tr>       
+                <a href="https://www.weatherapi.com/" title="Free Weather API"><img src='//cdn.weatherapi.com/v4/images/weatherapi_logo.png' alt="Weather data by WeatherAPI.com" border="0"></a>
+                </tbody>
+            </table>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <!-- <script type="text/javascript">   -->
+        <script th:inline="javascript">
+            var temp_c = {
+            x: [[${graphLocal_time}]],
+                    y: [[${graphTemp_c}]],
+                    type: 'lines',
+                    name: 'temp_c'
+            };
+            var gust_kph = {
+            x: [[${graphLocal_time}]],
+                    y: [[${graphGust_kph}]],
+                    type: 'lines',
+                    name: 'gust_kph'
+            };
+            var wind_kph = {
+            x: [[${graphLocal_time}]],
+                    y: [[${graphWind_kph}]],
+                    type: 'lines',
+                    name: 'wind_kph'
+            };
+            var data = [temp_c, wind_kph, gust_kph];
+            Plotly.newPlot('plotDiv', data);
+        </script>
+    </body>
+</html>
